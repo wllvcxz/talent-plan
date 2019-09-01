@@ -1,4 +1,5 @@
 use clap::{App, AppSettings, Arg, SubCommand};
+use kvs::KvStore;
 use std::process::exit;
 
 fn main() {
@@ -30,17 +31,25 @@ fn main() {
                 .arg(Arg::with_name("KEY").help("A string key").required(true)),
         )
         .get_matches();
-
+    
+    let mut kv = KvStore::new();
     match matches.subcommand() {
         ("set", Some(_matches)) => {
+            let k:String = _matches.value_of("KEY").unwrap().to_string();
+            let v:String = _matches.value_of("VALUE").unwrap().to_string();
+            kv.set(k, v);
             eprintln!("unimplemented");
             exit(1);
         }
         ("get", Some(_matches)) => {
+            let k:String = _matches.value_of("KEY").unwrap().to_string();
+            kv.get(k);            
             eprintln!("unimplemented");
             exit(1);
         }
         ("rm", Some(_matches)) => {
+            let k:String = _matches.value_of("KEY").unwrap().to_string();
+            kv.remove(k);
             eprintln!("unimplemented");
             exit(1);
         }
